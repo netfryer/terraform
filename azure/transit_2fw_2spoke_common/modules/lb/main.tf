@@ -1,6 +1,6 @@
 resource "azurerm_public_ip" "main" {
   count               = var.type == "public" ? 1 : 0
-  name                = "${var.name}-pip"
+  name                = "${var.name}-pip-01"
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = "Static"

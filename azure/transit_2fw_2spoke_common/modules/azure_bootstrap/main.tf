@@ -1,7 +1,7 @@
 
 
 resource "azurerm_storage_share" "main" {
-  name                 = "hub-ncus-palofw-st-01"
+  name                 = var.name
   storage_account_name = var.storage_account_name
   quota                = var.quota
 }

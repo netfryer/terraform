@@ -1,23 +1,8 @@
 #-----------------------------------------------------------------------------------------------------------------
-# Create resource group for FWs, FW NICs, and FW LBs
-
-resource "azurerm_resource_group" "common_fw" {
-  name     = "${var.global_prefix}${var.fw_prefix}-rg"
-  location = var.location
-}
-
-#-----------------------------------------------------------------------------------------------------------------
 # Create storage account and file share for bootstrapping
 
-resource "random_string" "main" {
-  length      = 15
-  min_lower   = 5
-  min_numeric = 10
-  special     = false
-}
-
 resource "azurerm_storage_account" "main" {
-  name                     = random_string.main.result
+  name                     = "${var.rg_target}-st-01"
   account_tier             = "Standard"
   account_replication_type = "LRS"
   location                 = azurerm_resource_group.common_fw.location
@@ -33,13 +18,24 @@ module "common_fileshare" {
   local_file_path        = "bootstrap_files/"
 }
 
+#-----------------------------------------------------------------------------------------------------------------
+# Create Vnet
+  
+module "vnet" {
+  source              = "./modules/vnet/"
+  name                = "${var.rg_target}-vnet-01"
+  address_space       = var.vnet_cidr
+  subnet_names        = var.subnet_names
+  subnet_prefixes     = var.subnet_cidrs
+  location            = var.location
+  resource_group_name = var.rg_target
 
 #-----------------------------------------------------------------------------------------------------------------
 # Create VM-Series.  For every fw_name entered, an additional VM-Series instance will be deployed.
 
 module "common_fw" {
   source                    = "./modules/vmseries/"
-  name                      = "${var.fw_prefix}-vm"
+  name                      = var.fw_prefix
   vm_count                  = var.fw_count
   username                  = var.fw_username
   password                  = var.fw_password
@@ -60,7 +56,7 @@ module "common_fw" {
   bootstrap_file_share      = module.common_fileshare.file_share_name
   bootstrap_share_directory = "None"
   location                  = var.location
-  resource_group_name       = azurerm_resource_group.common_fw.name
+  resource_group_name       = var.rg_target
   
   dependencies = [
     module.common_fileshare.completion
@@ -72,7 +68,7 @@ module "common_fw" {
 
 module "common_extlb" {
   source                  = "./modules/lb/"
-  name                    = "${var.fw_prefix}-public-lb"
+  name                    = var.lb_public_name
   type                    = "public"
   sku                     = "Standard"
   probe_ports             = [22]
@@ -80,7 +76,7 @@ module "common_extlb" {
   backend_ports           = [80, 22, 443]
   protocol                = "Tcp"
   location                = var.location
-  resource_group_name     = azurerm_resource_group.common_fw.name
+  resource_group_name     = var.rg_target
 }
 
 #-----------------------------------------------------------------------------------------------------------------
@@ -88,7 +84,7 @@ module "common_extlb" {
 
 module "common_intlb" {
   source                  = "./modules/lb/"
-  name                    = "${var.fw_prefix}-internal-lb"
+  name                    = var.lb_private_name
   type                    = "private"
   sku                     = "Standard"
   probe_ports             = [22]
@@ -96,9 +92,9 @@ module "common_intlb" {
   backend_ports           = [0]
   protocol                = "All"
   subnet_id               = module.vnet.vnet_subnets[2]
-  private_ip_address      = var.fw_internal_lb_ip
+  private_ip_address      = var.lb_private_ip
   location                = var.location
-  resource_group_name     = azurerm_resource_group.common_fw.name
+  resource_group_name     = var.rg_target
 }
 
 #-----------------------------------------------------------------------------------------------------------------
