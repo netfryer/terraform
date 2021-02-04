@@ -56,56 +56,6 @@ variable fw_internal_lb_ip {
 }
 
 #-----------------------------------------------------------------------------------------------------------------
-# Spoke variables
-
-variable spoke_username {
-}
-
-variable spoke_password {
-}
-
-variable spoke_udrs {
-}
-
-variable spoke1_prefix {
-  description = "Prefix to add to all resources added in spoke1's resource group"
-}
-
-variable spoke1_vm_count {
-}
-
-variable spoke1_vnet_cidr {
-}
-
-variable spoke1_subnet_cidrs {
-  type = list(string)
-}
-
-variable spoke1_internal_lb_ip {
-}
-
-variable spoke2_prefix {
-  description = "Prefix to add to all resources added in spoke2's resource group"
-}
-
-variable spoke2_vm_count {
-}
-
-variable spoke2_vnet_cidr {
-}
-
-variable spoke2_subnet_cidrs {
-  type = list(string)
-}
-
-variable tags {
-  description = "The tags to associate with newly created resources"
-  type        = map(string)
-
-  default = {}
-}
-
-#-----------------------------------------------------------------------------------------------------------------
 # Azure environment variables
 
 variable client_id {
