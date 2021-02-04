@@ -5,6 +5,12 @@ variable location {
 variable rg_target {
 }
 
+variable lb_public_name {
+}
+
+variable lb_private_name {
+}
+
 variable fw_prefix {
   description = "Prefix to add to all resources added in the firewall resource group"
   default     = ""
@@ -14,10 +20,7 @@ variable global_prefix {
   description = "Prefix to add to all resource groups created.  This is useful to create unique resource groups within a shared Azure subscription"
 }
 #-----------------------------------------------------------------------------------------------------------------
-# Transit VNET variables
-
-variable transit_prefix {
-}
+# VNET variables
 
 variable vnet_cidr {
 }
