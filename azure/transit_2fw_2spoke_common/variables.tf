@@ -82,3 +82,6 @@ variable tenant_id {
   description = "Azure tenant ID"
   default = ""
 }
+
+variable features {
+}
