@@ -1,14 +1,7 @@
 
 
-resource "random_string" "randomstring" {
-  length      = 15
-  min_lower   = 5
-  min_numeric = 10
-  special     = false
-}
-
 resource "azurerm_storage_share" "main" {
-  name                 = "${var.name}${random_string.randomstring.result}"
+  name                 = "hub-ncus-palofw-st-01"
   storage_account_name = var.storage_account_name
   quota                = var.quota
 }
