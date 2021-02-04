@@ -15,6 +15,6 @@ module "common_fileshare" {
   quota                = 1
   storage_account_name = azurerm_storage_account.main.name
   storage_account_key  = azurerm_storage_account.main.primary_access_key
-  local_file_path        = "bootstrap_files/"
+  local_file_path      = "bootstrap_files/"
 }
   
