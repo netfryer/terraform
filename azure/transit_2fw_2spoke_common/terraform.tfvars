@@ -1,5 +1,5 @@
 global_prefix           = ""
-location                = "ncus"
+location                = "northcentralus"
 rg_target               = "hub-ncus-palofw"
 
 # Vnet variables
