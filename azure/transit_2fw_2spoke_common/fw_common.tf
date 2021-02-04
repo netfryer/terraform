@@ -2,7 +2,7 @@
 # Create storage account and file share for bootstrapping
 
 resource "azurerm_storage_account" "main" {
-  name                     = "${var.rg_target}-st-01"
+  name                     = "hubncuspalofwst01"
   account_tier             = "Standard"
   account_replication_type = "LRS"
   location                 = var.location
