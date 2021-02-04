@@ -22,11 +22,11 @@ variable transit_prefix {
 variable vnet_cidr {
 }
 
-variable transit_subnet_names {
+variable subnet_names {
   type = list(string)
 }
 
-variable transit_subnet_cidrs {
+variable subnet_cidrs {
   type = list(string)
 }
 
@@ -49,6 +49,9 @@ variable fw_password {
 }
 
 variable fw_internal_lb_ip {
+}
+
+variable lb_private_ip {
 }
 
 variable fw_license {
