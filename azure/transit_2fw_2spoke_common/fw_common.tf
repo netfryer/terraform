@@ -2,22 +2,15 @@
 # Create resource group for FWs, FW NICs, and FW LBs
 
 resource "azurerm_resource_group" "common_fw" {
-  name     = "${var.global_prefix}${var.fw_prefix}-rg"
+  name     = "hub-ncus-palofw-rg"
   location = var.location
 }
 
 #-----------------------------------------------------------------------------------------------------------------
 # Create storage account and file share for bootstrapping
 
-resource "random_string" "main" {
-  length      = 15
-  min_lower   = 5
-  min_numeric = 10
-  special     = false
-}
-
 resource "azurerm_storage_account" "main" {
-  name                     = random_string.main.result
+  name                     = "hub-ncus-palofw-st-01"
   account_tier             = "Standard"
   account_replication_type = "LRS"
   location                 = azurerm_resource_group.common_fw.location
@@ -72,7 +65,7 @@ module "common_fw" {
 
 module "common_extlb" {
   source                  = "./modules/lb/"
-  name                    = "${var.fw_prefix}-public-lb"
+  name                    = "hub-ncus-palofw-lb-public-01"
   type                    = "public"
   sku                     = "Standard"
   probe_ports             = [22]
@@ -88,7 +81,7 @@ module "common_extlb" {
 
 module "common_intlb" {
   source                  = "./modules/lb/"
-  name                    = "${var.fw_prefix}-internal-lb"
+  name                    = "hub-ncus-palofw-lb-internal-01"
   type                    = "private"
   sku                     = "Standard"
   probe_ports             = [22]
