@@ -7,7 +7,7 @@ resource "null_resource" "dependency_getter" {
 #-----------------------------------------------------------------------------------------------------------------
 # Create NSGs for firewall dataplane interfaces (required for Standard SKU LB)
 resource "azurerm_network_security_group" "mgmt" {
-  name                = "${var.name}-nsg-mgmt"
+  name                = "hub-ncus-palofw-nsg-mgmt"
   location            = var.location
   resource_group_name = var.resource_group_name
 
@@ -25,7 +25,7 @@ resource "azurerm_network_security_group" "mgmt" {
 }
 
 resource "azurerm_network_security_group" "data" {
-  name                = "${var.name}-nsg-data"
+  name                = "hub-ncus-palofw-nsg-data"
   location            = var.location
   resource_group_name = var.resource_group_name
 
