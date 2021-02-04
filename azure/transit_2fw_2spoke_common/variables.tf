@@ -17,22 +17,6 @@ variable fw_license {
 variable global_prefix {
   description = "Prefix to add to all resource groups created.  This is useful to create unique resource groups within a shared Azure subscription"
 }
-#-----------------------------------------------------------------------------------------------------------------
-# Transit VNET variables
-
-variable transit_prefix {
-}
-
-variable transit_vnet_cidr {
-}
-
-variable transit_subnet_names {
-  type = list(string)
-}
-
-variable transit_subnet_cidrs {
-  type = list(string)
-}
 
 #-----------------------------------------------------------------------------------------------------------------
 # VM-Series variables
