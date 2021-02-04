@@ -7,7 +7,7 @@ resource "null_resource" "dependency_getter" {
 #-----------------------------------------------------------------------------------------------------------------
 # Create NSGs for firewall dataplane interfaces (required for Standard SKU LB)
 resource "azurerm_network_security_group" "mgmt" {
-  name                = "hub-ncus-palofw-nsg-mgmt"
+  name                = "${var.nsg_prefix}-mgmt"
   location            = var.location
   resource_group_name = var.resource_group_name
 
@@ -25,7 +25,7 @@ resource "azurerm_network_security_group" "mgmt" {
 }
 
 resource "azurerm_network_security_group" "data" {
-  name                = "hub-ncus-palofw-nsg-data"
+  name                = "${var.nsg_prefix}-data"
   location            = var.location
   resource_group_name = var.resource_group_name
 
@@ -58,7 +58,7 @@ resource "azurerm_network_security_group" "data" {
 # Create public IPs for firewall's management & dataplane1 interface
 resource "azurerm_public_ip" "nic0" {
   count               = var.nic0_public_ip ? var.vm_count : 0
-  name                = "${var.name}${count.index + 1}-nic0-pip"
+  name                = "${var.name}-${count.index + 1}-nic-01-pip-01"
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = var.public_ip_address_allocation
@@ -67,7 +67,7 @@ resource "azurerm_public_ip" "nic0" {
 
 resource "azurerm_public_ip" "nic1" {
   count               = var.nic1_public_ip ? var.vm_count : 0
-  name                = "${var.name}${count.index + 1}-nic1-pip"
+  name                = "${var.name}-${count.index + 1}-nic-02-pip-01"
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = var.public_ip_address_allocation
@@ -76,7 +76,7 @@ resource "azurerm_public_ip" "nic1" {
 
 resource "azurerm_public_ip" "nic2" {
   count               = var.nic2_public_ip ? var.vm_count : 0
-  name                = "${var.name}${count.index + 1}-nic2-pip"
+  name                = "${var.name}-${count.index + 1}-nic-03-pip-01"
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = var.public_ip_address_allocation
@@ -88,7 +88,7 @@ resource "azurerm_public_ip" "nic2" {
 
 resource "azurerm_network_interface" "nic0" {
   count                     = var.vm_count
-  name                      = "${var.name}${count.index + 1}-nic0"
+  name                      = "${var.name}-${count.index + 1}-nic-01"
   location                  = var.location
   resource_group_name       = var.resource_group_name
   network_security_group_id = azurerm_network_security_group.mgmt.id
@@ -104,7 +104,7 @@ resource "azurerm_network_interface" "nic0" {
 
 resource "azurerm_network_interface" "nic1" {
   count                     = var.vm_count
-  name                      = "${var.name}${count.index + 1}-nic1"
+  name                      = "${var.name}-${count.index + 1}-nic-02"
   location                  = var.location
   resource_group_name       = var.resource_group_name
   network_security_group_id = azurerm_network_security_group.data.id
@@ -121,7 +121,7 @@ resource "azurerm_network_interface" "nic1" {
 
 resource "azurerm_network_interface" "nic2" {
   count                     = var.vm_count
-  name                      = "${var.name}${count.index + 1}-nic2"
+  name                      = "${var.name}-${count.index + 1}-nic-03"
   location                  = var.location
   resource_group_name       = var.resource_group_name
   network_security_group_id = azurerm_network_security_group.data.id
