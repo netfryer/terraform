@@ -5,8 +5,8 @@ resource "azurerm_storage_account" "main" {
   name                     = "${var.rg_target}-st-01"
   account_tier             = "Standard"
   account_replication_type = "LRS"
-  location                 = azurerm_resource_group.common_fw.location
-  resource_group_name      = azurerm_resource_group.common_fw.name
+  location                 = var.location
+  resource_group_name      = var.rg_target
 }
 
 module "common_fileshare" {
