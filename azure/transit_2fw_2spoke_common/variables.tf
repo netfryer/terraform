@@ -10,13 +10,6 @@ variable fw_prefix {
   default     = ""
 }
 
-variable fw_license {
-  description = "VM-Series license: byol, bundle1, or bundle2"
-  # default = "byol"   
-  # default = "bundle1"  
-  # default = "bundle2"
-}
-
 variable global_prefix {
   description = "Prefix to add to all resource groups created.  This is useful to create unique resource groups within a shared Azure subscription"
 }
